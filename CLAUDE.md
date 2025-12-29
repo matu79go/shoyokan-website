@@ -29,3 +29,77 @@
 1. 「https://www.shoyokan.jp/ の構成を分析し、Tailwind CSSを用いた1ページ構成のHTMLの骨組みを作成して。」
 2. 「既存サイトにある各道場の稽古スケジュール表を、HTMLのテーブルまたはカード形式でレスポンシブに再現して。」
 3. 「Instagram連携部分を、後でスクリプトを差し込みやすいようにダミー表示で実装して。」
+
+---
+
+## デプロイ手順
+
+### さくらレンタルサーバーへのFTPデプロイ
+
+**接続情報:**
+- FTPサーバー: `shoyokan.sakura.ne.jp`（またはIP: `219.94.129.183`）
+- FTPアカウント: `shoyokan`
+- FTP初期フォルダ: `www`
+- 本番URL: http://shoyokan.sakura.ne.jp
+
+**WSLからのFTPアップロード（DNSが解決できない場合はIPを使用）:**
+```bash
+# 単一ファイルのアップロード
+curl -T ファイル名 ftp://219.94.129.183/www/ --user shoyokan:パスワード
+
+# フォルダ付きでアップロード（フォルダ自動作成）
+curl --ftp-create-dirs -T ファイル名 ftp://219.94.129.183/www/images/ --user shoyokan:パスワード
+
+# 複数ファイルを一括アップロード（例: imagesフォルダ）
+for file in *.avif; do
+  curl --ftp-create-dirs -T "$file" ftp://219.94.129.183/www/images/ --user shoyokan:パスワード -s && echo "$file uploaded"
+done
+```
+
+**アップロード対象ファイル:**
+```
+www/
+├── index.html
+├── send.php
+├── thanks.html
+├── favicon.svg
+└── images/
+    └── (全画像ファイル)
+```
+
+**アップロード不要:**
+- `.git/`, `.claude/`, `CLAUDE.md`
+- `mock.pdf`, `mock_flow.png`, `mock_top.png`
+
+### 全ファイル一括デプロイ（コピペ用）
+```bash
+# HTMLファイル
+curl -T /mnt/c/workspace/syoyokan/index.html ftp://219.94.129.183/www/ --user shoyokan:パスワード -s && echo "index.html"
+curl -T /mnt/c/workspace/syoyokan/send.php ftp://219.94.129.183/www/ --user shoyokan:パスワード -s && echo "send.php"
+curl -T /mnt/c/workspace/syoyokan/thanks.html ftp://219.94.129.183/www/ --user shoyokan:パスワード -s && echo "thanks.html"
+curl -T /mnt/c/workspace/syoyokan/favicon.svg ftp://219.94.129.183/www/ --user shoyokan:パスワード -s && echo "favicon.svg"
+
+# 画像ファイル（imagesフォルダ）
+for file in /mnt/c/workspace/syoyokan/images/*.avif /mnt/c/workspace/syoyokan/images/*.png; do
+  curl --ftp-create-dirs -T "$file" ftp://219.94.129.183/www/images/ --user shoyokan:パスワード -s && echo "$(basename $file)"
+done
+```
+
+---
+
+## メール設定（send.php）
+
+**設定箇所（send.php 冒頭）:**
+```php
+$config = [
+    'to_email' => 'info@shoyokan.jp',              // 道場の受信用メールアドレス
+    'from_email' => 'noreply@shoyokan.jp',         // 送信元（さくらで作成したアドレス）
+    'from_name' => '藤枝将陽館 お問い合わせフォーム',
+    'subject_prefix' => '【藤枝将陽館】',
+];
+```
+
+**注意:**
+- 送信元メールアドレスは、さくらレンタルサーバーのドメインまたは独自ドメインで作成したものを使用
+- 外部ドメイン（gmail.com, hotmail.co.jp等）を送信元にするとSPFチェックで弾かれる可能性あり
+- 本番では `@shoyokan.jp` のメールアドレス推奨

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>送信完了 - 藤枝将陽館 空手道場</title>
+  <meta name="robots" content="noindex, nofollow">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;700&family=Zen+Kaku+Gothic+New:wght@400;700&display=swap"
+    rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#1e3a5f',
+            'primary-dark': '#152a45',
+          },
+          fontFamily: {
+            'serif-jp': ['"Noto Serif JP"', 'serif'],
+            'zen': ['"Zen Kaku Gothic New"', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+</head>
+
+<body class="bg-gray-50 min-h-screen flex items-center justify-center p-4 font-zen">
+  <div class="bg-white rounded-lg shadow-lg p-8 max-w-lg w-full text-center">
+    <!-- 成功アイコン -->
+    <div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+      <svg class="w-10 h-10 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+      </svg>
+    </div>
+
+    <h1 class="font-serif-jp text-2xl md:text-3xl font-bold text-primary mb-4">
+      お問い合わせを受け付けました
+    </h1>
+
+    <p class="text-gray-600 mb-6 leading-relaxed">
+      この度は藤枝将陽館へお問い合わせいただき、<br>
+      誠にありがとうございます。<br><br>
+      ご入力いただいたメールアドレス宛に<br>
+      確認メールをお送りしました。<br><br>
+      <strong>2営業日以内</strong>に担当者より<br>
+      ご連絡いたしますので、<br>
+      今しばらくお待ちくださいませ。
+    </p>
+
+    <div class="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-6 text-left">
+      <p class="text-amber-800 text-sm">
+        <strong>※ メールが届かない場合</strong><br>
+        迷惑メールフォルダをご確認いただくか、<br>
+        お電話（090-6098-8133）にてお問い合わせください。
+      </p>
+    </div>
+
+    <a href="index.html"
+      class="inline-block bg-primary hover:bg-primary-dark text-white font-bold px-8 py-3 rounded transition-colors">
+      トップページへ戻る
+    </a>
+  </div>
+</body>
+
+</html>

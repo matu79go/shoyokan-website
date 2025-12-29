@@ -259,10 +259,11 @@
              currentSlide: 0,
              slides: [
                'https://images.unsplash.com/photo-1555597673-b21d5c935865?w=1600&h=900&fit=crop',
-               'https://images.unsplash.com/photo-1564415315949-7a0c4c73aab4?w=1600&h=900&fit=crop',
-               'https://images.unsplash.com/photo-1518611012118-696072aa579a?w=1600&h=900&fit=crop',
-               'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=1600&h=900&fit=crop',
-               'https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=1600&h=900&fit=crop'
+               'images/seiseki.avif',
+               'images/youji1.avif',
+               'images/shougakusei1.avif',
+               'images/adult1.avif',
+               'images/tokucho.avif'
              ],
              init() {
                setInterval(() => {
@@ -375,16 +376,16 @@
   <section class="py-8 bg-white overflow-hidden">
     <div class="relative" x-data="{
            images: [
-             'https://images.unsplash.com/photo-1555597673-b21d5c935865?w=400&h=400&fit=crop',
-             'https://images.unsplash.com/photo-1564415315949-7a0c4c73aab4?w=400&h=400&fit=crop',
-             'https://images.unsplash.com/photo-1518611012118-696072aa579a?w=400&h=400&fit=crop',
-             'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=400&h=400&fit=crop',
-             'https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=400&h=400&fit=crop',
-             'https://images.unsplash.com/photo-1574680096145-d05b474e2155?w=400&h=400&fit=crop',
-             'https://images.unsplash.com/photo-1599058917765-a780eda07a3e?w=400&h=400&fit=crop',
-             'https://images.unsplash.com/photo-1509563268479-0f004cf3f58b?w=400&h=400&fit=crop',
-             'https://images.unsplash.com/photo-1552674605-db6ffd4facb5?w=400&h=400&fit=crop',
-             'https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=400&h=400&fit=crop'
+             'images/youji1.avif',
+             'images/youji2.avif',
+             'images/youji3.avif',
+             'images/shougakusei1.avif',
+             'images/shougakusei2.avif',
+             'images/shougakusei3.avif',
+             'images/adult1.avif',
+             'images/adult2.avif',
+             'images/adult3.avif',
+             'images/keiko1.avif'
            ]
          }">
       <div class="flex animate-scroll-x">
@@ -957,7 +958,7 @@
 
   <!-- ========== 生徒・保護者の声 セクション ========== -->
   <section id="voice" class="py-20 relative overflow-hidden"
-    style="background-image: url('https://images.unsplash.com/photo-1599058917765-a780eda07a3e?w=1600&h=900&fit=crop'); background-size: cover; background-position: center;">
+    style="background-image: url('images/tokucho.avif'); background-size: cover; background-position: center;">
     <!-- オーバーレイ -->
     <div class="absolute inset-0 bg-white/85"></div>
 
@@ -971,24 +972,21 @@
         <!-- 声1 -->
         <div class="bg-white/95 backdrop-blur-sm rounded-lg shadow-lg p-6 text-center">
           <div class="w-24 h-24 rounded-full mx-auto mb-4 overflow-hidden">
-            <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=200&h=200&fit=crop&crop=face"
-              alt="保護者" class="w-full h-full object-cover">
+            <img src="images/smile1.png" alt="保護者" class="w-full h-full object-cover">
           </div>
           <p class="text-text-main">子どもが空手を大好きになり毎回笑顔で通っています！</p>
         </div>
         <!-- 声2 -->
         <div class="bg-white/95 backdrop-blur-sm rounded-lg shadow-lg p-6 text-center">
           <div class="w-24 h-24 rounded-full mx-auto mb-4 overflow-hidden">
-            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop&crop=face"
-              alt="生徒" class="w-full h-full object-cover">
+            <img src="images/smile2.png" alt="生徒" class="w-full h-full object-cover">
           </div>
           <p class="text-text-main">試合で勝てるようになり、自信がつきました！</p>
         </div>
         <!-- 声3 -->
         <div class="bg-white/95 backdrop-blur-sm rounded-lg shadow-lg p-6 text-center">
           <div class="w-24 h-24 rounded-full mx-auto mb-4 overflow-hidden">
-            <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=200&h=200&fit=crop&crop=face"
-              alt="保護者" class="w-full h-full object-cover">
+            <img src="images/smile3.png" alt="保護者" class="w-full h-full object-cover">
           </div>
           <p class="text-text-main">先生方が優しく、安心して通わせることができています。</p>
         </div>
@@ -1254,14 +1252,16 @@
               subject: '',
               message: '',
               errors: {},
+              submitting: false,
               validateForm() {
                 this.errors = {};
                 if (!this.name.trim()) this.errors.name = 'お名前を入力してください';
                 if (!this.email.trim()) this.errors.email = 'メールアドレスを入力してください';
                 else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.email)) this.errors.email = '有効なメールアドレスを入力してください';
+                if (!this.message.trim()) this.errors.message = 'お問い合わせ内容を入力してください';
                 return Object.keys(this.errors).length === 0;
               }
-            }" @submit.prevent="if(validateForm()) $el.submit()">
+            }" @submit.prevent="if(!submitting && validateForm()) { submitting = true; $el.submit(); }">
 
         <div>
           <label class="block text-text-main font-bold mb-2" for="subject">お問い合わせ項目</label>
@@ -1300,16 +1300,21 @@
         </div>
 
         <div>
-          <label class="block text-text-main font-bold mb-2" for="message">お問い合わせ内容</label>
+          <label class="block text-text-main font-bold mb-2" for="message">お問い合わせ内容 <span class="text-red-500">*</span></label>
           <textarea id="message" name="message" rows="5" x-model="message"
             class="w-full border border-border-light rounded px-4 py-3 text-text-main focus:border-primary focus:outline-none transition-colors resize-none"
+            :class="errors.message ? 'border-red-500' : ''"
             placeholder="お問い合わせ内容を入力してください"></textarea>
+          <p x-show="errors.message" x-text="errors.message" class="text-red-500 text-sm mt-1"></p>
         </div>
 
         <div class="text-center">
           <button type="submit"
-            class="bg-primary hover:bg-primary-dark text-white font-bold px-12 py-3 rounded transition-all duration-300">
-            送信する
+            :disabled="submitting"
+            :class="submitting ? 'bg-gray-400 cursor-not-allowed' : 'bg-primary hover:bg-primary-dark'"
+            class="text-white font-bold px-12 py-3 rounded transition-all duration-300">
+            <span x-show="!submitting">送信する</span>
+            <span x-show="submitting">送信中...</span>
           </button>
 
           <div class="mt-8 flex justify-center space-x-6">
