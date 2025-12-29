@@ -1,0 +1,10 @@
+# Mock files (not needed for production)
+mock.pdf
+mock_*.png
+
+# Claude settings
+.claude/
+
+# OS files
+.DS_Store
+Thumbs.db
