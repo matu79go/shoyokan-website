@@ -94,6 +94,11 @@
       color: #333;
     }
 
+    /* iPhone セーフエリア対応 */
+    .safe-area-bottom {
+      padding-bottom: env(safe-area-inset-bottom, 0px);
+    }
+
     .font-serif-jp {
       font-family: 'Noto Serif JP', serif;
     }
@@ -1308,7 +1313,7 @@
   </section>
 
   <!-- ========== Footer ========== -->
-  <footer class="bg-white border-t border-border-light py-12">
+  <footer class="bg-white border-t border-border-light py-12 pb-24 xl:pb-12">
     <div class="max-w-4xl mx-auto px-4 text-center">
       <p class="text-text-gray text-sm mb-2">静岡県藤枝市・焼津市・島田市｜NPO法人 日本空手松濤連盟</p>
       <h3 class="font-serif-jp text-2xl font-bold text-primary mb-4">藤枝将陽館</h3>
@@ -1329,6 +1334,22 @@
       </div>
     </div>
   </footer>
+
+  <!-- ========== モバイル固定フッター ========== -->
+  <div class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-lg z-50 xl:hidden safe-area-bottom">
+    <div class="flex items-center justify-around py-2 px-4">
+      <!-- 電話ボタン -->
+      <a href="tel:090-2345-8505" class="flex items-center justify-center space-x-2 bg-[#06C755] text-white font-bold py-3 px-6 rounded-full flex-1 mr-2 shadow-md">
+        <i data-lucide="phone" class="w-5 h-5"></i>
+        <span class="text-sm">電話で問合せ</span>
+      </a>
+      <!-- お問い合わせボタン -->
+      <a href="#contact" class="flex items-center justify-center space-x-2 bg-pink-500 text-white font-bold py-3 px-6 rounded-full flex-1 ml-2 shadow-md">
+        <i data-lucide="mail" class="w-5 h-5"></i>
+        <span class="text-sm">お問い合わせ</span>
+      </a>
+    </div>
+  </div>
 
   <!-- Lucide Icons 初期化 -->
   <script>
