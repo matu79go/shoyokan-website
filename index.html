@@ -474,16 +474,15 @@
         </div>
       </div>
 
-      <div class="grid md:grid-cols-2 gap-12">
-        <!-- 写真エリア -->
-        <div class="aspect-video bg-gray-200 rounded-lg overflow-hidden">
-          <img src="https://images.unsplash.com/photo-1599058917765-a780eda07a3e?w=800&h=450&fit=crop" alt="道場の仲間たち"
-            class="w-full h-full object-cover">
-        </div>
-
-        <!-- 特徴・成果 -->
-        <div class="space-y-8">
-          <!-- 特徴 -->
+      <div class="space-y-12">
+        <!-- 特徴 -->
+        <div class="grid md:grid-cols-2 gap-8 items-center">
+          <!-- 写真エリア -->
+          <div class="aspect-video bg-gray-200 rounded-lg overflow-hidden shadow-lg">
+            <img src="images/tokucho.avif" alt="道場の特徴"
+              class="w-full h-full object-cover">
+          </div>
+          <!-- テキストエリア -->
           <div>
             <div class="flex items-center justify-center mb-6">
               <!-- カラフルコンフェッティSVG -->
@@ -544,9 +543,12 @@
               <li class="flex items-start"><span class="text-primary mr-3">•</span>クリスマス会やバーベキュー等々各種イベントあり！</li>
             </ul>
           </div>
+        </div>
 
-          <!-- 成果実績 -->
-          <div>
+        <!-- 成果実績 -->
+        <div class="grid md:grid-cols-2 gap-8 items-center">
+          <!-- テキストエリア -->
+          <div class="md:order-2">
             <div class="flex items-center justify-center mb-6">
               <!-- カラフルコンフェッティSVG -->
               <svg class="w-12 h-12 mr-3" preserveAspectRatio="xMidYMid meet" viewBox="40.584 33.764 116.998 132.003"
@@ -604,6 +606,11 @@
               <li class="flex items-start"><span class="text-primary mr-3">•</span>各大会上位入賞・全国制覇も経験あり</li>
               <li class="flex items-start"><span class="text-primary mr-3">•</span>県大会、全国大会上位入賞者多数輩出</li>
             </ul>
+          </div>
+          <!-- 写真エリア -->
+          <div class="aspect-video bg-gray-200 rounded-lg overflow-hidden shadow-lg md:order-1">
+            <img src="images/seiseki.avif" alt="成果実績"
+              class="w-full h-full object-cover">
           </div>
         </div>
       </div>
