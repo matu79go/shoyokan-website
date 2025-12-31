@@ -1,20 +1,34 @@
 <?php
 /**
  * お問い合わせフォーム送信処理
- * さくらレンタルサーバー（ライト/スタンダード）対応
+ * PHPMailer + SMTP認証版（さくらレンタルサーバー対応）
  */
 
-// 文字コード設定（ISO-2022-JP で送信）
+// PHPMailer読み込み
+require_once __DIR__ . '/phpmailer/Exception.php';
+require_once __DIR__ . '/phpmailer/PHPMailer.php';
+require_once __DIR__ . '/phpmailer/SMTP.php';
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
+use PHPMailer\PHPMailer\Exception;
+
+// 文字コード設定
 mb_language('Japanese');
 mb_internal_encoding('UTF-8');
 
 // 設定
 $config = [
-    'to_email' => 'matu79go@gmail.com',           // 道場のメールアドレス（テスト用）
+    'to_email' => 'takachika3.5@gmail.com',       // 道場のメールアドレス
     'to_name' => '藤枝将陽館',
-    'from_email' => 'shoyokan@shoyokan.sakura.ne.jp',  // さくらサーバーのメールアドレス
+    'from_email' => 'noreply@shoyokan.jp',        // 送信元メールアドレス
     'from_name' => '藤枝将陽館 お問い合わせフォーム',
     'subject_prefix' => '【藤枝将陽館】',
+    // SMTP設定（さくらレンタルサーバー）
+    'smtp_host' => 'shoyokan.sakura.ne.jp',
+    'smtp_port' => 587,
+    'smtp_user' => 'noreply@shoyokan.jp',
+    'smtp_pass' => 'shoyokan123456789',
 ];
 
 // POSTリクエスト以外は拒否
@@ -140,45 +154,65 @@ EOT;
 $adminSubject = $config['subject_prefix'] . $subject . '（' . $name . '様）';
 $autoReplySubject = $config['subject_prefix'] . 'お問い合わせありがとうございます';
 
-// ISO-2022-JP でメール送信する関数
-function sendMailJP($to, $subject, $body, $from_email, $from_name, $reply_to = null) {
-    // 件名をMIMEエンコード
-    $subject_encoded = mb_encode_mimeheader($subject, 'ISO-2022-JP', 'B');
+/**
+ * PHPMailerでメール送信
+ */
+function sendMailWithSMTP($config, $to, $toName, $subject, $body, $replyTo = null) {
+    $mail = new PHPMailer(true);
 
-    // 本文をISO-2022-JPに変換
-    $body_encoded = mb_convert_encoding($body, 'ISO-2022-JP', 'UTF-8');
+    try {
+        // SMTP設定
+        $mail->isSMTP();
+        $mail->Host = $config['smtp_host'];
+        $mail->SMTPAuth = true;
+        $mail->Username = $config['smtp_user'];
+        $mail->Password = $config['smtp_pass'];
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+        $mail->Port = $config['smtp_port'];
 
-    // ヘッダー
-    $headers = [];
-    $headers[] = 'MIME-Version: 1.0';
-    $headers[] = 'Content-Type: text/plain; charset=ISO-2022-JP';
-    $headers[] = 'Content-Transfer-Encoding: 7bit';
-    $headers[] = 'From: ' . mb_encode_mimeheader($from_name, 'ISO-2022-JP', 'B') . ' <' . $from_email . '>';
+        // 文字コード
+        $mail->CharSet = 'UTF-8';
+        $mail->Encoding = 'base64';
 
-    if ($reply_to) {
-        $headers[] = 'Reply-To: ' . $reply_to;
+        // 送信元・送信先
+        $mail->setFrom($config['from_email'], $config['from_name']);
+        $mail->addAddress($to, $toName);
+
+        // 返信先
+        if ($replyTo) {
+            $mail->addReplyTo($replyTo);
+        }
+
+        // 本文
+        $mail->isHTML(false);
+        $mail->Subject = $subject;
+        $mail->Body = $body;
+
+        $mail->send();
+        return true;
+    } catch (Exception $e) {
+        error_log('Mail Error: ' . $mail->ErrorInfo);
+        return false;
     }
-
-    return mail($to, $subject_encoded, $body_encoded, implode("\r\n", $headers));
 }
 
 // 道場宛メール送信
-$adminResult = sendMailJP(
+$adminResult = sendMailWithSMTP(
+    $config,
     $config['to_email'],
+    $config['to_name'],
     $adminSubject,
     $adminMailBody,
-    $config['from_email'],
-    $config['from_name'],
     $email  // 返信先をお客様のメールアドレスに
 );
 
 // 自動返信メール送信
-$autoReplyResult = sendMailJP(
+$autoReplyResult = sendMailWithSMTP(
+    $config,
     $email,
+    $name,
     $autoReplySubject,
-    $autoReplyBody,
-    $config['from_email'],
-    $config['from_name']
+    $autoReplyBody
 );
 
 // 結果に応じてリダイレクト
